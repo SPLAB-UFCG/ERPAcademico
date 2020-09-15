@@ -1,7 +1,5 @@
 # ERP-UASC
 
-> Pequena descrição do que seu projeto faz.
-
  Projeto com finalidade de integrar os diversos sistemas e informações que se encontram de forma disjunta na unidade acadêmica, com o acesso as informações necessárias é possivel tomar melhores decisões.
  
   O ERP(Enterprise Resource Planning) consiste em um painel de controle e informações, onde é possivel acessar as informações de diversas areas em um unico local, podendo dessa forma, de maneira agil, localizar por exemplo qual setor está com um problema. Além de automizar alguns processos, tornando mais vida a facil dos gestores, entre outras funcionalidades.
