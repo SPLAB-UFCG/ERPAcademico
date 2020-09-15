@@ -1,6 +1,6 @@
 # ERP-UASC
 
- O ERP(Enterprise Resource Planning) consiste em um painel de controle, onde há a integração de diversos sistemas e informações que se encontram de forma disjunta na unidade acadêmica, com esse conhecimento é possivel:
+ O ERP(Enterprise Resource Planning) consiste em um painel de controle, onde há a integração de diversos sistemas e informações que se encontram de forma disjunta na unidade acadêmica. Com o acesso a esses dados, que se encontram de forma disjunta nas unidades academicas, há uma redução no tempo consumido pelos gestores para realização de ações que dependem dessas informações. Entre outras facilidades:
  
  + Melhor tomada de decisões com base em informações disponíveis.
  + Automatização de processsos.
