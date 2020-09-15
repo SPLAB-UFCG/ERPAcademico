@@ -1,33 +1,18 @@
-# oss-template
+# ERP-UASC
 
 > Pequena descrição do que seu projeto faz.
 
-<!-- Descreva aqui no início os objetivos do seu projeto. -->
+ Projeto com finalidade de integrar os diversos sistemas e informações que se encontram de forma disjunta na unidade acadêmica, com o acesso as informações necessárias é possivel tomar melhores decisões.
+ 
+  O ERP(Enterprise Resource Planning) consiste em um painel de controle e informações, onde é possivel acessar as informações de diversas areas em um unico local, podendo dessa forma, de maneira agil, localizar por exemplo qual setor está com um problema. Além de automizar alguns processos, tornando mais vida a facil dos gestores, entre outras funcionalidades.
+ 
+ Para uma especificação mais detalhada do projeto: [ERP](https://docs.google.com/document/d/e/2PACX-1vTFGq5_jfEVRNwky4hy8MZCmqNSRTSVMz8FkWl7xYLn6-wYIancyYA_wfp07-mYY3SG7-iJtsulbT7i/pub)
+ 
+## como usar
+ A definir
 
-Um template para seu projeto Open Source contendo os arquivos essenciais. Mude os tópicos desse `README.md` para conter as informações necessárias do seu projeto. Nesse template irá conter:
-
-- `README.md`: Uma estrutura básica para descrever o que é seu projeto e como utilizá-lo.
-- `LICENSE`: A licença está como **MIT**, edite para outra caso necessário. Use o [choosealicense](https://choosealicense.com/) para ajudar.
-- `CONTRIBUTING.md`: Arquivo opcional onde pode conter mais detalhes de como contribuir para seu projeto.
-- `CODE_OF_CONDUCT.md`: Código de conduta baseado no [Contributor Covenant](https://www.contributor-covenant.org). Adapte se necessário.
-- `github/ISSUE_TEMPLATE`: Template para issues.
-- `github/PULL_REQUEST_TEMPLATE`: Template para pull requests.
-
-## Como Usar
-
-<!-- Descreva como um usuário pode utilizar seu projeto. -->
-
-## Desenvolvimento
-
-Descreva quais tecnologias necessárias para sua aplicação funcionar e adicione referências.
-
-```
-caso sua aplicação exija um comando para rodar, coloque aqui.
-```
-
-## Como Contribuir
-
-<!-- Descreva informações necessárias para contribuir. Se necessário referencie o CONTRIBUTING.md -->
+## tecnologias
+A definir
 
 ## Licença
 
