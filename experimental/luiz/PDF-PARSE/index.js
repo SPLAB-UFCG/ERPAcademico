@@ -16,10 +16,10 @@ pdfParse(pdfFile).then(data => {
     const teachers = getTeachers(arrayPDF);
     // Obtendo do PDF os horários em que a disciplina ocorrerá
     const schedule = getSchedule(arrayPDF);
-
+    
     // Gerando um array contendo, em cada posição, um outro array que contém 
     // a disciplina e seu respectivo horário
-    const classesRelation = joinClassesWithSchedule(classes,schedule, teachers)
+    const classesRelation = joinClassesWithSchedule(classes, schedule, teachers)
     
     // Criando um objeto que possui a chave como sendo o nome do professor, e o valor como 
     //sendo o array contendo as informações da disciplina (nome e horário)

@@ -10,7 +10,15 @@ function getSubject(arrayPDF) {
 
 function getTeachers(arrayPDF) {
     const arrayTeachers = arrayPDF.map((element, index) => {
-            if(element === 'Professores:') return arrayPDF[index + 1];
+            if(element === 'Professores:' && arrayPDF[index + 1].includes(' - ')) {
+                return arrayPDF[index + 1];
+            } else if (element === 'Professores:' && !arrayPDF[index + 1].includes(' - ')) {
+                for(let i = index; i < arrayPDF.length; i++) {
+                    if(!arrayPDF[i].startsWith('141') && arrayPDF[i].includes(' - ')){
+                        return(arrayPDF[i]);
+                    }
+                }
+            }
         }).filter(teacher => teacher !== undefined);
 
         return arrayTeachers
