@@ -1,29 +1,33 @@
 const fs = require('fs');
-
 const pdfParse = require('pdf-parse');
+
 const { getSubject, getTeachers, getSchedule } = require('./utils/filterPdf');
+const { joinClassesWithSchedule, createObjectTeachersClasses } = require('./utils/joinInfo');
 const pdfFile = fs.readFileSync('./turmas.pdf')
 
 
 pdfParse(pdfFile).then(data => {
     const textPdf = data.text;
-    const pdfString = JSON.stringify(textPdf);
-
     let arrayPDF = textPdf.split("\n");
 
-    const arrayDisciplinas = getSubject(arrayPDF);
+    //Obtendo do PDF as disciplinas
+    const classes = getSubject(arrayPDF);
+    //Obtendo do PDF os professores relacionados às disciplinas
+    const teachers = getTeachers(arrayPDF);
+    // Obtendo do PDF os horários em que a disciplina ocorrerá
+    const schedule = getSchedule(arrayPDF);
 
-    const arrayProfessores = getTeachers(arrayPDF);
+    // Gerando um array contendo, em cada posição, um outro array que contém 
+    // a disciplina e seu respectivo horário
+    const classesRelation = joinClassesWithSchedule(classes,schedule, teachers)
+    // Criando um objeto que possui a chave como sendo o nome do professor, e o valor como 
+    //sendo o array contendo as informações da disciplina (nome e horário)
+    const teachersObject = createObjectTeachersClasses(teachers, classesRelation)
 
-    const arraySchedule = getSchedule(arrayPDF);
-
-    let classRelation = [];
-
-    if (arrayDisciplinas.length === arrayProfessores.length && arrayDisciplinas.length === arraySchedule.length) {
-        for(let i = 0; i < arrayDisciplinas.length; i++) {
-            classRelation.push([arrayDisciplinas[i], arrayProfessores[i], arraySchedule[i]])
+    // Criando um arquivo JSON oriundo do objeto contendo os professores.
+    fs.writeFile('./db/professores.json', JSON.stringify(teachersObject), (err) => {
+        if(err) {
+            console.log(err)
         }
-    }
-
-    console.log(classRelation);
+    })
 })
