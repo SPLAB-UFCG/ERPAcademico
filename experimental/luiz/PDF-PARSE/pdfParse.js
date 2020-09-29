@@ -19,14 +19,14 @@ pdfParse(pdfFile).then(data => {
     
     // Gerando um array contendo, em cada posição, um outro array que contém 
     // a disciplina e seu respectivo horário
-    const classesRelation = joinClassesWithSchedule(classes, schedule, teachers)
+    const classesRelation = joinClassesWithSchedule(classes, schedule, teachers);
     
     // Criando um objeto que possui a chave como sendo o nome do professor, e o valor como 
     //sendo o array contendo as informações da disciplina (nome e horário)
-    const teachersObject = createObjectTeachersClasses(teachers, classesRelation)
+    const teachersObject = createObjectTeachersClasses(teachers, classesRelation);
 
     //Criando um arquivo JSON oriundo do objeto contendo os professores.
-    fs.writeFile('./db/professores.json', JSON.stringify(teachersObject), (err) => {
+    fs.writeFile(`./db/professores.json`, JSON.stringify(teachersObject), (err) => {
         if(err) {
             console.log(err)
         }
