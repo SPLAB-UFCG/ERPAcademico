@@ -9,14 +9,16 @@ const pdfFile = fs.readFileSync('./turmas.pdf')
 pdfParse(pdfFile).then(data => {
     const textPdf = data.text;
     let arrayPDF = textPdf.split("\n");
+    // console.log(arrayPDF)
 
     //Obtendo do PDF as disciplinas
     const classes = getSubject(arrayPDF);
+    // console.log(classes);
     //Obtendo do PDF os professores relacionados às disciplinas
     const teachers = getTeachers(arrayPDF);
     // Obtendo do PDF os horários em que a disciplina ocorrerá
     const schedule = getSchedule(arrayPDF);
-    
+    // console.log(`Classes: ${classes.length}; Prof: ${teachers.length}; Horarios: ${schedule.length};`)
     // Gerando um array contendo, em cada posição, um outro array que contém 
     // a disciplina e seu respectivo horário
     const classesRelation = joinClassesWithSchedule(classes, schedule, teachers);
@@ -25,7 +27,7 @@ pdfParse(pdfFile).then(data => {
     //sendo o array contendo as informações da disciplina (nome e horário)
     const teachersObject = createObjectTeachersClasses(teachers, classesRelation);
 
-    //Criando um arquivo JSON oriundo do objeto contendo os professores.
+    // // Criando um arquivo JSON oriundo do objeto contendo os professores.
     fs.writeFile(`./db/professores.json`, JSON.stringify(teachersObject), (err) => {
         if(err) {
             console.log(err)

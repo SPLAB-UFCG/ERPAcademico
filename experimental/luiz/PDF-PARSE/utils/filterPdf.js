@@ -6,10 +6,11 @@
  */
 function getSubject(arrayPDF) {
     let arrayDisciplinas = arrayPDF.map((element) => {
-        if(element.startsWith('1411')) return element
-    }).filter(disciplina => disciplina !== undefined);
-    
-    arrayDisciplinas.shift();
+        if(element.startsWith('1411') || element.startsWith('130') || element.startsWith('110')
+        || element.startsWith('1114')){
+            return element  
+        } 
+    }).filter(disciplina => disciplina !== undefined && !disciplina.includes("UNID. ACAD."));
 
     return arrayDisciplinas;
 }
@@ -46,7 +47,7 @@ function getTeachers(arrayPDF) {
 
 function getSchedule(arrayPDF) {
     const arraySchedule = arrayPDF.map(element => {
-        if(element.includes(':00')) return element;
+        if(element.includes(':00-') || element.includes(':30')) return element;
     }).filter(schedule => schedule !== undefined);
 
     return arraySchedule;

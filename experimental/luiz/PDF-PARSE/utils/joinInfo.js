@@ -12,7 +12,7 @@ function joinClassesWithSchedule(classes, schedule, teachers) {
             classesRelation.push([teachers[i], classes[i], schedule[i]])
         }
     }
-
+    
     return classesRelation;
 }
 
@@ -55,7 +55,7 @@ function getTeacherSubstring(separatorsArray, stringTeacher, teacherCodeLength) 
             professores.push(professor);
         }
     }
-
+    
     return professores;
 }
 
@@ -77,7 +77,11 @@ function fixMultipleTeachers(teachersObj) {
 
         if (separatorPositions.length <= 1) {
             separatorPositions = [];
-            teachersObjFixed[key] = teachersObj[key]
+            if(Object.keys(teachersObjFixed).includes(key)){
+                teachersObjFixed[key].push(teachersObj[key][0]);
+            } else {
+                teachersObjFixed[key] = teachersObj[key];
+            }
         } else {
 
             professores = getTeacherSubstring(separatorPositions, key, 7)
@@ -108,7 +112,6 @@ function fixMultipleTeachers(teachersObj) {
 function createObjectTeachersClasses(teachers, classesRelation) {
     let finalTeachersObj = { "professores": [] };
     const teachersObj = {}
-
 
     for (let i = 0; i < teachers.length; i++) {
         teachersObj[classesRelation[i][0]] = []
