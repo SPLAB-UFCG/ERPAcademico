@@ -1,6 +1,6 @@
 const fs = require('fs');
 const pdf = require('pdf-parse');
-const { extractSubjects, extractProfessors, extractSchandules, joinArrays } = require('./extractInfos');
+const { extractSubjects, extractProfessors, extractSchandules, joinArrays, setValuesOnMap, formatOutput } = require('./extractInfos');
  
 let dataBuffer = fs.readFileSync('turmas_14110000_2020.0_214712160.pdf');
 
@@ -10,6 +10,8 @@ pdf(dataBuffer).then(function(data) {
     extractSubjects(pdfFiltered);
     extractProfessors(pdfFiltered);
     extractSchandules(pdfFiltered);
+    joinArrays();
+    setValuesOnMap();
 
-    console.log(joinArrays());
+    console.log(formatOutput());
 });
