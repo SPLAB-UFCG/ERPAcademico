@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testando os dados do PDF</title>
+</head>
+
+<body>
+    <div class="form-container">
+        <form id="form" autocomplete="off">
+            <div class="autocomplete">
+                <input type="text" name="nome" placeholder="Nome do Professor" id="nameInput">
+            </div>
+            <button type="submit">Procurar</button>
+        </form>
+    </div>
+    <div></div>
+    <span id="teacher-info"></span>
+    <div id="table-container"></div>
+</body>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font: 16px Arial;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+        width: 350px;
+    }
+
+    input {
+        border: 1px solid transparent;
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    input[type=text] {
+        background-color: #f1f1f1;
+        width: 100%;
+    }
+
+    button[type=submit] {
+        background-color: DodgerBlue;
+        color: #fff;
+        height: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+    .autocomplete-items div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9;
+    }
+
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: 1.4rem;
+    }
+
+    .form-container {
+        display: flex;
+        justify-content: center;
+        padding: 1.6rem;
+    }
+
+    table {
+        text-align: center;
+        border-collapse: collapse;
+    }
+    table, th,td {
+        border: solid 5px dodgerblue;
+    }
+
+    th, td {
+        padding: 15px;
+    }
+
+    #teacher-info {
+        margin: 5px 0px;
+        font-size: 1.2rem;
+    }
+
+</style>
+
+<script>
+
+    function createTable() {
+        const tableContainer = document.getElementById('table-container')
+
+        const table = document.createElement('table')
+        table.id = "teacher-table"
+
+        const thead = document.createElement('thead')
+        const tr = document.createElement('tr')
+        const thDisciplina = document.createElement('th')
+        thDisciplina.innerText = "Disciplinas"
+        const thHorario = document.createElement('th')
+        thHorario.innerText = "Horários/Salas"
+
+        tr.appendChild(thDisciplina)
+        tr.appendChild(thHorario)
+        thead.appendChild(tr)
+
+        const tbody = document.createElement('tbody')
+        tbody.id = "table-body"
+
+        table.appendChild(thead)
+        table.appendChild(tbody)
+        
+        tableContainer.appendChild(table)
+
+    }
+
+    function deleteTable() {
+        const table = document.getElementById('teacher-table')
+
+        if(table) {
+            table.remove()
+        }
+    }
+
+    function getTeachersInfo(teacher) {
+        fetch('http://localhost:8080/professores')
+            .then(resp => resp.json())
+            .then(teachers => teachers[0])
+            .then(objTeachers => {
+                const classesInfo = []
+
+                const keys = Object.keys(objTeachers)
+                keys.forEach(key => {
+                    if (key.includes(teacher.toUpperCase()) && teacher.trim().length !== 0) {
+
+                        const profInfo = document.getElementById('teacher-info')
+                        profInfo.innerHTML = `Professor: ${key}`;
+
+                        // clearTable('table-body');
+                        deleteTable();
+                        createTable();
+
+                        objTeachers[key].forEach((array, i) => {
+
+                            const tableBody = document.getElementById('table-body')
+
+                            const tr = document.createElement('tr');
+                            tr.className = "table-body-row"
+                            tableBody.append(tr)
+
+                            const tdClass = document.createElement('td');
+                            const tdSchedule = document.createElement('td');
+
+                            tr.append(tdClass);
+                            tr.append(tdSchedule)
+
+                            tdClass.innerHTML = array[0];
+                            tdSchedule.innerHTML = array[1];
+                        })
+                    }
+                })
+
+                return classesInfo;
+            })
+    }
+
+    document.getElementById('form').onsubmit = async event => {
+        event.preventDefault();
+
+        const form = event.target;
+        const data = new FormData(form);
+        const body = new URLSearchParams(data);
+        const teacher = Array.from(body)[0][1]
+
+        getTeachersInfo(teacher);
+    }
+
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function (e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    (async function () {
+        await fetch('http://localhost:8080/professores')
+        .then(resp => resp.json())
+        .then(arrayTeachers => arrayTeachers[0])
+        .then(objTeachers => {
+            const teachersArray = Object.keys(objTeachers).map(prof => {
+                const separatorPosition = prof.indexOf('-')
+                const teachersName = prof.substring(separatorPosition + 2, prof.length);
+                return teachersName
+            })
+            return teachersArray
+        }).then(resp => autocomplete(document.getElementById("nameInput"), resp))
+    })()    
+
+</script>
+
+</html>
