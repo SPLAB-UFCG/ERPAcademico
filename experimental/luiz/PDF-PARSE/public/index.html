@@ -123,13 +123,16 @@
 </style>
 
 <script>
-
+    
     function createTable() {
+        // Método para Criar uma tabela dentro da div table-container
         const tableContainer = document.getElementById('table-container')
 
+        // Criando o elemento tabela, com id teacher-table
         const table = document.createElement('table')
         table.id = "teacher-table"
 
+        // Criando o cabeçalho da tabela
         const thead = document.createElement('thead')
         const tr = document.createElement('tr')
         const thDisciplina = document.createElement('th')
@@ -141,6 +144,7 @@
         tr.appendChild(thHorario)
         thead.appendChild(tr)
 
+        // Criando o corpo da tabela
         const tbody = document.createElement('tbody')
         tbody.id = "table-body"
 
@@ -152,6 +156,7 @@
     }
 
     function deleteTable() {
+        // Método para remover a tabela da DOM.
         const table = document.getElementById('teacher-table')
 
         if(table) {
@@ -159,57 +164,44 @@
         }
     }
 
-    function getTeachersInfo(teacher) {
-        fetch('http://localhost:8080/professores')
-            .then(resp => resp.json())
-            .then(teachers => teachers[0])
-            .then(objTeachers => {
-                const classesInfo = []
+    function createTableBody(arrayTeachersInfo) {
+        const tableBody = document.getElementById('table-body')
 
-                const keys = Object.keys(objTeachers)
-                keys.forEach(key => {
-                    if (key.includes(teacher.toUpperCase()) && teacher.trim().length !== 0) {
+        const tr = document.createElement('tr');
+        tr.className = "table-body-row"
+        tableBody.append(tr)
 
-                        const profInfo = document.getElementById('teacher-info')
-                        profInfo.innerHTML = `Professor: ${key}`;
+        const tdClass = document.createElement('td');
+        const tdSchedule = document.createElement('td');
 
-                        // clearTable('table-body');
-                        deleteTable();
-                        createTable();
+        tr.append(tdClass);
+        tr.append(tdSchedule)
 
-                        objTeachers[key].forEach((array, i) => {
-
-                            const tableBody = document.getElementById('table-body')
-
-                            const tr = document.createElement('tr');
-                            tr.className = "table-body-row"
-                            tableBody.append(tr)
-
-                            const tdClass = document.createElement('td');
-                            const tdSchedule = document.createElement('td');
-
-                            tr.append(tdClass);
-                            tr.append(tdSchedule)
-
-                            tdClass.innerHTML = array[0];
-                            tdSchedule.innerHTML = array[1];
-                        })
-                    }
-                })
-
-                return classesInfo;
-            })
+        tdClass.innerHTML = arrayTeachersInfo[0];
+        tdSchedule.innerHTML = arrayTeachersInfo[1];
     }
 
-    document.getElementById('form').onsubmit = async event => {
-        event.preventDefault();
+    async function getTeachersInfo(teacher) {
+        
+        const arrayFetchResponse = await fetch('http://localhost:8080/professores')
+                                    .then(resp => resp.json())
+        
+        const objTeachers = arrayFetchResponse[0];
 
-        const form = event.target;
-        const data = new FormData(form);
-        const body = new URLSearchParams(data);
-        const teacher = Array.from(body)[0][1]
+        Object.keys(objTeachers).forEach(key => {
+            if (key.includes(teacher.toUpperCase()) && teacher.trim().length !== 0) {
 
-        getTeachersInfo(teacher);
+                const profInfo = document.getElementById('teacher-info')
+                profInfo.innerHTML = `Professor: ${key}`;
+
+                deleteTable();
+                createTable();
+
+                objTeachers[key].forEach((array) => {
+                    createTableBody(array)
+                })
+            }
+        })
     }
 
     function autocomplete(inp, arr) {
@@ -309,19 +301,39 @@
         });
     }
 
+    function getTeachersName(teacher) {
+        const separatorPosition = teacher.indexOf('-');
+        const teachersName = teacher.substring(separatorPosition + 2, teacher.length);
+
+        return teachersName;
+    }
+
     (async function () {
-        await fetch('http://localhost:8080/professores')
-        .then(resp => resp.json())
-        .then(arrayTeachers => arrayTeachers[0])
-        .then(objTeachers => {
-            const teachersArray = Object.keys(objTeachers).map(prof => {
-                const separatorPosition = prof.indexOf('-')
-                const teachersName = prof.substring(separatorPosition + 2, prof.length);
-                return teachersName
-            })
-            return teachersArray
-        }).then(resp => autocomplete(document.getElementById("nameInput"), resp))
-    })()    
+
+        const arrayFetchResponse = await fetch('http://localhost:8080/professores')
+                                    .then(resp => resp.json())
+        
+        const objTeachers = arrayFetchResponse[0];
+        
+        const teachersArray = Object.keys(objTeachers).map(teacher => {
+            const teachersName = getTeachersName(teacher);
+            return teachersName;
+        });
+
+        autocomplete(document.getElementById("nameInput"), teachersArray);
+
+    })()
+
+    document.getElementById('form').onsubmit = async event => {
+        event.preventDefault();
+
+        const form = event.target;
+        const data = new FormData(form);
+        const body = new URLSearchParams(data);
+        const teacher = Array.from(body)[0][1]
+
+        getTeachersInfo(teacher);
+    } 
 
 </script>
 
