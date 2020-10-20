@@ -3,22 +3,22 @@ const pdfParse = require('pdf-parse');
 
 const { getSubject, getTeachers, getSchedule } = require('./utils/filterPdf');
 const { joinClassesWithSchedule, createObjectTeachersClasses } = require('./utils/joinInfo');
-const pdfFile = fs.readFileSync('./turmas.pdf')
+const pdfFile = fs.readFileSync('./assets/pdfFiles/turmas2.pdf')
 
 
 pdfParse(pdfFile).then(data => {
     const textPdf = data.text;
     let arrayPDF = textPdf.split("\n");
-    // console.log(arrayPDF)
 
     //Obtendo do PDF as disciplinas
     const classes = getSubject(arrayPDF);
-    // console.log(classes);
+
     //Obtendo do PDF os professores relacionados às disciplinas
     const teachers = getTeachers(arrayPDF);
+
     // Obtendo do PDF os horários em que a disciplina ocorrerá
     const schedule = getSchedule(arrayPDF);
-    // console.log(`Classes: ${classes.length}; Prof: ${teachers.length}; Horarios: ${schedule.length};`)
+
     // Gerando um array contendo, em cada posição, um outro array que contém 
     // a disciplina e seu respectivo horário
     const classesRelation = joinClassesWithSchedule(classes, schedule, teachers);

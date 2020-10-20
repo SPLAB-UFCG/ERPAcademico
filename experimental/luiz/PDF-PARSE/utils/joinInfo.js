@@ -67,9 +67,9 @@ function getTeacherSubstring(separatorsArray, stringTeacher, teacherCodeLength) 
  */
 function fixMultipleTeachers(teachersObj) {
     const teachersObjFixed = {};
-
+    
     for (const key in teachersObj) {
-
+        
         const separator = "-";
         let professores = [];
 
@@ -78,7 +78,9 @@ function fixMultipleTeachers(teachersObj) {
         if (separatorPositions.length <= 1) {
             separatorPositions = [];
             if(Object.keys(teachersObjFixed).includes(key)){
-                teachersObjFixed[key].push(teachersObj[key][0]);
+                for(let j = 0; j < teachersObj[key].length; j++){
+                    teachersObjFixed[key].push(teachersObj[key][j])
+                }
             } else {
                 teachersObjFixed[key] = teachersObj[key];
             }
@@ -88,14 +90,16 @@ function fixMultipleTeachers(teachersObj) {
 
             for (let i = 0; i < professores.length; i++) {
                 if (Object.keys(teachersObjFixed).includes(professores[i])) {
-                    teachersObjFixed[professores[i]].push(teachersObj[key][0])
+                    for(let j = 0; j < teachersObj[key].length; j++){
+                        teachersObjFixed[professores[i]].push(teachersObj[key][j])
+                    }
                 } else {
                     teachersObjFixed[professores[i]] = teachersObj[key]
                 }
             }
         }
     }
-
+    console.log(teachersObjFixed['337184 - FRANCISCO VILAR BRASILEIRO'])
     return teachersObjFixed;
 
 }
