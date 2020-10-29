@@ -5,7 +5,6 @@ const { getSubject, getTeachers, getSchedule } = require('./utils/filterPdf');
 const { joinClassesWithSchedule, createObjectTeachersClasses } = require('./utils/joinInfo');
 const pdfFile = fs.readFileSync('./assets/pdfFiles/turmas2.pdf')
 
-
 pdfParse(pdfFile).then(data => {
     const textPdf = data.text;
     let arrayPDF = textPdf.split("\n");
