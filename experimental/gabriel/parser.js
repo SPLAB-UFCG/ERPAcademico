@@ -9,47 +9,6 @@ function formatar(dataBuffer){
     let mapaString = data.text.trim().split("\n");
     let valores = populaMapa(mapaString);
 
-    let consulta = true;
-    let leitor = read.createInterface({
-          input: process.stdin,
-          output: process.stdout
-      });
-      let answer = "";
-      leitor.question("\n opções a baixo" +
-                      "\n 1 - Listar todas as matérias e professores" +
-                      "\n 2 - Listar todos os professores" +
-                      "\n 3 - Listar todas as matérias" +
-                      "\n 4 - Consultar as matérias de um professor" +
-                      "\n 5 - Consultar professores de uma matéria",
-      function(answer){
-        opcao = answer;
-        outside()
-        leitor.close();
-      })
-
-    while(consulta){
-
-      switch(answer) {
-        case "1":
-          let pares = Object.entries(valores);
-          for(i = 0; i < pares.length; i++){
-            console.log(toString(pares[i]));
-          }
-          break;
-        case "2":
-          console.log(getProfessores(Object.keys(valores)));
-          break;
-        case "3":
-          console.log(getTurmas(Object.values(valores)));
-          break;
-        case "4":
-          break;
-        case "5":
-          break;
-        default:
-
-      }
-    }
 
     let pares = Object.entries(valores);
     for(i = 0; i < pares.length; i++){
@@ -62,9 +21,7 @@ function formatar(dataBuffer){
 
 }
 
-async function ask(){
 
-}
 
 function getProfessores(professoresConjunto){
   let professores = "";

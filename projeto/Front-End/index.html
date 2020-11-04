@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pr-br" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+  </head>
+  <body>
+
+    <main>
+      <label for="pdf">selecione o arquivo</label>
+      <input type="file" name="pdf" value="" id="file"></input>
+    </main>
+
+    <script>
+      var inputElement = document.getElementById("file");
+      inputElement.addEventListener("change", (e) => {
+          const file = inputElement.files[0];
+
+          fetch("http://localhost:3000/", {
+              method: "POST",
+              body: file
+              // headers:{"Content-Type":"application/pdf"}
+          })
+          .then(response => response.body)
+          .then(body => console.log(body))
+          .catch(e => console.log(e));
+      })
+
+    </script>
+  </body>
+</html>
