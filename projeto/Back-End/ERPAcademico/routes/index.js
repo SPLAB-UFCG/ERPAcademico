@@ -2,17 +2,25 @@ var express = require('express');
 var router = express.Router();
 var pdfParser = require("./parser");
 const file = require('fs');
-let pdfRecebido;
 
-/* GET home page. */
-router.post('/', function(req, res, next) {
+var pdfRecebido;
+var multer  = require('multer')
+var storage = multer.memoryStorage();
+var upload = multer({storage: storage});
+
+
+router.post('/', upload.single('pdf'), function(req, res, next) {
    pdfRecebido = req.body;
 
-   // let dataBuffer  = file.readFileSync(pdfRecebido.path);
+   // pdfParser.formatar(req.body.file)
 
-
-   res.send(req.body);
+   res.send(req.file);
 });
+
+router.get('/professores', function(req, res, next){
+
+})
+
 
 
 module.exports = router;

@@ -5,11 +5,21 @@ var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var bodyParser = require('body-parser');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
+
+// Put these statements before you define any routes.
+
 var app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
