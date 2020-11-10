@@ -65,6 +65,6 @@ function Demonstrar(info){
 
     tableB.appendChild(linha);
   }
-  principal.appendChild(table);
+  principal.innerHTML = "<table>"+  table.innerHTML+ "</table>";
 
 }
