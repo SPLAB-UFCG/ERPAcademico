@@ -12,9 +12,9 @@ var upload = multer({storage: storage});
 router.post('/', upload.single('pdf'), function(req, res, next) {
    pdfRecebido = req.body;
 
-   // pdfParser.formatar(req.body.file)
+   pdfParser.formatar(req.file.buffer, res)
 
-   res.send(req.file);
+   // res.send(req.file.buffer);
 });
 
 router.get('/professores', function(req, res, next){

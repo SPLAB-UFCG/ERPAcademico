@@ -4,29 +4,20 @@
     <meta charset="utf-8">
     <title></title>
 
+    <style rel="stylesheet" hrf="index.css">
+
+    </style>
+
   </head>
   <body>
 
-    <main>
+    <main id="mainf">
       <label for="pdf">selecione o arquivo</label>
       <input type="file" name="pdf" value="" id="file"></input>
     </main>
 
-    <script>
-      var inputElement = document.getElementById("file");
-      inputElement.addEventListener("change", (e) => {
-          const file = inputElement.files[0];
-          var data = new FormData();
-          new.append("pdf", file);
-          fetch("http://localhost:3000/", {
-              method: "POST",
-              body: data,
-              headers:{"Content-Type":"multipart/form-data"}
-          })
-          .then(response => response.body)
-          .then(body => console.log(body))
-          .catch(e => console.log(e));
-      })
+    <script src="index.js">
+
 
     </script>
   </body>

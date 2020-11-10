@@ -14,7 +14,7 @@ function formatar(dataBuffer){
     for(i = 0; i < pares.length; i++){
       console.log(toString(pares[i]));
     }
-    // console.dir(ProfMat, {'maxArrayLength': null});
+    // console.dir(mapaString, {'maxArrayLength': null});
   }).catch(e => {
     console.log(e);
   })
@@ -68,11 +68,11 @@ function populaMapa(mapa) {
 
     if(mapa[i].startsWith("1411")){
       materia = mapa[i];
-    } else if (mapa[i].endsWith('(S/S)')){
+    } else if (mapa[i].includes(":00") || mapa[i].includes(":30")){
       horarios = mapa[i];
     }
 
-    if(listProfs){
+    if(listProfs && mapa[i].includes(" - ") && !mapa[i].includes("141")){
       let professor = mapa[i];
       if(ProfMat.hasOwnProperty(professor)) {
         ProfMat[professor].push(materia + "//" + horarios)
@@ -84,7 +84,7 @@ function populaMapa(mapa) {
       listProfs = false;
     }
 
-    if(mapa[i].startsWith("Profe")){
+    if(mapa[i].startsWith("Profe") && !(mapa[i+1].includes("1411"))){
       listProfs = true;
     }
   }
