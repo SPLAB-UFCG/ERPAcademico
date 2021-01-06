@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "json-server": "^0.16.1",
     "pdf-parse": "^1.1.1"
   },
